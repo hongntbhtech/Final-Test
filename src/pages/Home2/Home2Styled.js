@@ -62,7 +62,7 @@ ${tw`text-[14px] font-normal leading-[21px] text-[#8b8b8b] tracking-[1.4px] pt-[
 
 `;
 
-export const Button = styled.button`
+export const ButtonABC = styled.button`
 ${tw`text-[14px] font-semibold leading-[17.5px] text-[#FF64AE] pt-[24px]`}
 
 

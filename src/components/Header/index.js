@@ -5,6 +5,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Dropdown, Button } from "flowbite-react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FaUser } from 'react-icons/fa';
 
 function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -12,11 +13,12 @@ function Header() {
     const menuRef = useRef(null);
     const navigate = useNavigate();
 
-
     const [user, setUser] = useState({
         username: "",
         name: ""
     });
+
+    const [isLoggedIn, setIsLoggedIn] = useState(false); // Trạng thái theo dõi đăng nhập
 
     const handleClick = () => setMenuOpen(prevMenuOpen => !prevMenuOpen);
 
@@ -32,40 +34,48 @@ function Header() {
     useEffect(() => {
         document.addEventListener('mousedown', handleOutsideClick);
         return () => {
-            document.removeEventListener('mousedown', handleOutsideClick); //??
+            document.removeEventListener('mousedown', handleOutsideClick);
         };
     }, [menuOpen, isOpen]);
 
     const toggleMenu = (event) => {
-        event.stopPropagation(); // Ngăn chặn sự kiện truyền lên các phần tử cha
+        event.stopPropagation();
         setIsOpen(prev => !prev);
     };
 
-
     useEffect(() => {
         const items = JSON.parse(localStorage.getItem('users'));
-
         if (items) {
-            toast.success("Login success");
+            if (!isLoggedIn) {
+                toast.success("Login success"); 
+                setIsLoggedIn(true); 
+            }
             setUser(items);
         }
-    }, []);
+    }, [isLoggedIn]);
 
     const handleLogout = () => {
         localStorage.clear();
+        setIsLoggedIn(false); 
         navigate("/login");
-    }
+    };
+
     return (
         <>
             <ToastContainer />
             <header className='max-w-screen-2xl font-poppins mx-auto'>
-                <div className='max-w-[1188px] mx-auto flex pl-[20px] pr-[24px] justify-between pt-[41px]'>
-                    <div>
+                <div className='max-w-[1188px] mx-auto flex pl-[20px] pr-[24px] justify-between pt-[41px] max-md:gap-[10px] max-sssm:pt-[px] max-sssm:pt-[48px]'>
+                    <div className='max-lg:hidden'>
                         <img className='max-lg:w-[100%]' src={logo} alt="abc" />
                     </div>
                     <div ref={menuRef} className={`pt-[17px] absolute max-lg:left-0 max-lg:w-full max-lg:bg-gray-100 max-lg:shadow-lg max-lg:transition-all max-lg:duration-300 ${menuOpen ? 'top-[0px]' : '-top-[600px]'} lg:static`}>
-                        <ul onClick={() => setMenuOpen(false)} className='flex gap-[45px] max-lg:flex-col max-lg:w-[100%]'>
-                            <li className='max-lg:w-[100%] max-lg:text-center max-lg:pt-[50px] group relative flex justify-center max-lg:max-h-[300px] max-lg:border-b max-lg:border-gray-300 max-lg:pb-2'>
+                        <ul onClick={() => setMenuOpen(false)} className='flex gap-[45px] max-lg:flex-col max-lg:w-[100%] max-xl:gap-[30px]'>
+                            <li className="max-lg:w-[100%] max-lg:text-center max-lg:border-b max-lg:border-gray-300 max-lg:pb-2">
+                                <div className='lg:hidden'>
+                                    <img className='mx-auto' src={logo} alt="abc" />
+                                </div>
+                            </li>
+                            <li className='max-lg:w-[100%] max-lg:text-center  group relative flex justify-center max-lg:max-h-[300px] max-lg:border-b max-lg:border-gray-300 max-lg:pb-2'>
                                 <button onClick={toggleMenu} className='no-underline text-base font-medium leading-[24px] tracking-[1.6px] text-[#8B8B8B] whitespace-nowrap cursor-pointer'>
                                     Home +
                                 </button>
@@ -90,7 +100,6 @@ function Header() {
                                 </div>
                             </li>
 
-
                             <li className="max-lg:w-[100%] max-lg:text-center max-lg:border-b max-lg:border-gray-300 max-lg:pb-2">
                                 <Link to='/about' className='max-lg:my-1 max-lg:mx-2 no-underline text-base font-medium leading-[24px] tracking-[1.6px] text-[#8B8B8B] -ml-[6px]'>About</Link>
                             </li>
@@ -108,18 +117,30 @@ function Header() {
                             </li>
                         </ul>
                     </div>
+
                     <div className='text-[25px] lg:hidden cursor-pointer pt-[18px]' onClick={handleClick}>
                         {menuOpen ? <FaTimes /> : <FaAlignJustify />}
                     </div>
 
                     <div>
-                        <Dropdown label="Dropdown button" dismissOnClick={false}>
-                            {user && <>
-                                <Dropdown.Item>{user.name}</Dropdown.Item>
-                                <Dropdown.Item>{user.username}</Dropdown.Item>
-                                <Dropdown.Item></Dropdown.Item>
-                                <Dropdown.Item><Button onClick={handleLogout} color="gray">Logout</Button></Dropdown.Item>
-                            </>}
+                        <Dropdown
+                            label={<FaUser />}
+                            dismissOnClick={false}
+                            style={{ backgroundColor: '#FF64AE', marginTop: '12px', width: '50px' }}
+                        >
+                            {user && (
+                                <>
+                                    <Dropdown.Item className='flex flex-col items-center'>
+                                        <FaUser style={{ fontSize: '24px', marginBottom: '20px' }} />
+                                        {user.name}
+                                    </Dropdown.Item>
+                                    <Dropdown.Item className='flex flex-col items-center'>{user.username}</Dropdown.Item>
+                                    <Dropdown.Item className='border-t my-2'></Dropdown.Item>
+                                    <Dropdown.Item className='flex flex-col items-center'>
+                                        <Button onClick={handleLogout} color="gray">Logout</Button>
+                                    </Dropdown.Item>
+                                </>
+                            )}
                         </Dropdown>
                     </div>
                 </div>
@@ -129,4 +150,3 @@ function Header() {
 }
 
 export default Header;
-
