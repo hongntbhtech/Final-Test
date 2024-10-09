@@ -17,7 +17,7 @@ const SignInComponent = () => {
     // API call to sign in
     const mutation = useMutation(async (data) => {
         try {
-            const response = await axios.post("http://localhost:4001/api/auth/sign-in", data);
+            const response = await axios.post("https://0g5v6mvs-4001.asse.devtunnels.ms/api/auth/sign-in", data);
             return response;
         } catch (error) {
             if (error.response && error.response.status === 401) {

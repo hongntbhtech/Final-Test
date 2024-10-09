@@ -13,7 +13,7 @@ const SignUpComponent = () => {
     // API call to sign up
     const mutation = useMutation(async (data) => {
         try {
-            return await axios.post('http://localhost:4001/api/auth/sign-up', data);
+            return await axios.post('https://0g5v6mvs-4001.asse.devtunnels.ms/api/auth/sign-up', data);
         } catch (error) {
             if (error.response && error.response.status === 400) {
                 toast.error(error.response.data.message || error.message);
