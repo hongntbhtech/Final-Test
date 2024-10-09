@@ -47,8 +47,8 @@ function Header() {
         const items = JSON.parse(localStorage.getItem('users'));
         if (items) {
             if (!isLoggedIn) {
-                toast.success("Login success"); 
-                setIsLoggedIn(true); 
+                toast.success("Login success");
+                setIsLoggedIn(true);
             }
             setUser(items);
         }
@@ -56,7 +56,7 @@ function Header() {
 
     const handleLogout = () => {
         localStorage.clear();
-        setIsLoggedIn(false); 
+        setIsLoggedIn(false);
         navigate("/login");
     };
 
@@ -136,9 +136,16 @@ function Header() {
                                     </Dropdown.Item>
                                     <Dropdown.Item className='flex flex-col items-center'>{user.username}</Dropdown.Item>
                                     <Dropdown.Item className='border-t my-2'></Dropdown.Item>
+
+                                    <Link to='/profile' className='flex flex-col items-center text-gray-600'>
+                                        Profile
+                                    </Link>
+
                                     <Dropdown.Item className='flex flex-col items-center'>
-                                        <Button onClick={handleLogout} color="gray">Logout</Button>
+                                        <Button onClick={handleLogout} className='text-gray-600'>Logout</Button>
                                     </Dropdown.Item>
+
+
                                 </>
                             )}
                         </Dropdown>

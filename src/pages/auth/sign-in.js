@@ -2,16 +2,19 @@ import axios from "axios";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-import { Link } from "react-router-dom"; 
+import { Link } from "react-router-dom";
+
+import { useState } from "react"
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 
 const SignInComponent = () => {
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     // API call to sign in
@@ -42,6 +45,13 @@ const SignInComponent = () => {
         });
     };
 
+
+    const [showPassword, setShowPassword] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(prev => !prev);
+    };
+
     return (
         <>
             <ToastContainer />
@@ -58,7 +68,7 @@ const SignInComponent = () => {
                     {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username.message}</p>}
                 </div>
 
-                <div className="mb-4">
+                {/* <div className="mb-4">
                     <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
                     <input
                         id="password"
@@ -66,6 +76,27 @@ const SignInComponent = () => {
                         type="password"
                         {...register('password', { required: 'Password is required' })}
                     />
+                    {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
+                </div> */}
+
+
+                <div className="mb-4">
+                    <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                    <div className="relative">
+                        <input
+                            id="password"
+                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            type={showPassword ? 'text' : 'password'}
+                            {...register('password', { required: 'Password is required' })}
+                        />
+                        <button
+                            type="button"
+                            onClick={togglePasswordVisibility}
+                            className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                        >
+                            {showPassword ? <FaEye /> : <FaEyeSlash />} {/* Hiển thị biểu tượng mắt */}
+                        </button>
+                    </div>
                     {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
                 </div>
 
@@ -80,7 +111,7 @@ const SignInComponent = () => {
 
                 <div className="text-center mt-4 flex mx-auto">
                     <p className="text-sm text-gray-600 mx-auto">
-                        Don't have an account?                     
+                        Don't have an account?
                         <Link to='/sign-up'>
                             <button
                                 className="w-[50%] mx-auto text-white bg-[#ff64ae]  focus:ring-4  font-medium rounded-lg text-sm px-5 py-2.5 mb-2"

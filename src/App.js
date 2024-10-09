@@ -15,6 +15,7 @@ import Contact from './pages/Contact';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import SignInComponent from './pages/auth/sign-in';
 import SignUpComponent from './pages/auth/sign-up';
+import Profile from './pages/Profile';
 
 // Create the Redux store
 const store = createStore(rootReducer);
@@ -34,6 +35,7 @@ function App() {
           <Route path='/team' element={<Team />} />
           <Route path='/blog' element={<Blog />} />
           <Route path='/contact' element={<Contact />} />
+          <Route path='/profile' element={<Profile/>}/>
 
           <Route path='/login' element={<SignInComponent />} />
           <Route path='/sign-up' element={<SignUpComponent />} />
